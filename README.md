@@ -1,5 +1,3 @@
-試したい技術があるときに、サクッと環境を用意するためのテンプレです。
-
 # 環境構築、設定
 ## SvelteKit
 
@@ -20,9 +18,9 @@ pnpm i -D sveltekit-superforms zod
  pnpm add -D prisma && pnpm add @prisma/client
 
  - cli利用確認
- npx prisma 
+ pnpx prisma 
 
 - Generate Prisma files (default: postgresql)
-  npx prisma init 
+  pnpx prisma init 
 
  pnpm prisma studio

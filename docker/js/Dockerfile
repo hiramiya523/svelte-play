@@ -19,7 +19,7 @@ RUN ARCH= OPENSSL_ARCH= && dpkgArch="$(dpkg --print-architecture)" \
   esac \
   && set -ex \
   # libatomic1 for arm
-  && apt-get update && apt-get install -y ca-certificates curl unzip wget gnupg dirmngr xz-utils libatomic1 --no-install-recommends \
+  && apt-get update && apt-get install -y ca-certificates openssl curl unzip wget gnupg dirmngr xz-utils libatomic1 --no-install-recommends \
   && rm -rf /var/lib/apt/lists/* \
   # use pre-existing gpg directory, see https://github.com/nodejs/docker-node/pull/1895#issuecomment-1550389150
   && export GNUPGHOME="$(mktemp -d)" \
@@ -65,6 +65,8 @@ RUN ARCH= OPENSSL_ARCH= && dpkgArch="$(dpkg --print-architecture)" \
   # nodeをnodejsとしても使用可能にするリンク
   # && ln -s /usr/local/bin/node /usr/local/bin/nodejs \
   && npm install -g pnpm bun
+
+RUN apt-get update && apt-get install -y openssl --no-install-recommends
 
 WORKDIR /home/node
 COPY --chmod=704 --chown=node:node docker-entrypoint.sh /usr/local/bin/

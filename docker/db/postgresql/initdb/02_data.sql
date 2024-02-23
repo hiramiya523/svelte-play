@@ -1,4 +1,8 @@
-\c example
+\c sample_db;
 
--- サンブルデータの登録
--- INSERT INTO sample (id, name) VALUES(nextval('sample_id_seq'), 'sample name');
+create table users (
+    id serial not null,             -- ID
+    name text not null,             -- ユーザー名
+    created_at timestamp not null,  -- 作成日時
+    primary key (id)
+);
