@@ -1,0 +1,68 @@
+services:
+  js:
+    build:
+      context: ./docker/js
+      args:
+        - UID=1000
+        - GID=1000
+    # user: ${HOST_UID}:${HOST_GID}
+    environment:
+      TZ: 'Asia/Tokyo'
+    volumes:
+      - ./front:/home/node/front
+    tty: true
+    working_dir: /home/node/front
+    ports:
+      - ${BIND_IP:-127.0.0.1}:5173:5173
+
+  web:
+    build:
+      context: ./docker/web/nginx
+      args:
+        - UID=${WEB_USER_UID}
+        - GID=${WEB_USER_GID}
+    tty: true
+    # user: ${WEB_USER_UID}:${WEB_USER_GID}
+    # volumes:
+    # TODO /静的環境/フロントのビルドパス
+    # - ./static/webroot:/var/www/html
+    environment:
+      TZ: 'Asia/Tokyo'
+      # NGINX_HOST: foobar.com
+      NGINX_PORT: 80
+    ports:
+      - ${BIND_IP:-127.0.0.1}:${HTTP_PORT}:80
+      # - ${BIND_IP:-127.0.0.1}:${HTTPS_PORT}:443
+      # volumes:
+      # conf
+      # - ./docker/web/nginx.conf:/etc/nginx/nginx.conf
+      # - ./docker/web/conf.d:/etc/nginx/conf.d
+      # - ./docker/web/parts:/etc/nginx/parts
+      # # front root
+      # - ./front-admin/webroot:/usr/share/nginx/webroot
+      # # log
+      # - ./logs/web:/tmp/web
+      # cap_drop:
+      #   - ALL
+      # cap_add:
+      #   - NET_BIND_SERVICE
+
+  pgsql:
+    restart: always
+    build:
+      context: ./docker/db/postgresql
+      args:
+        - UID=1000
+        - GID=1000
+    volumes:
+      - ./docker/db/postgresql/initdb:/docker-entrypoint-initdb.d
+      # - ./data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: "user"
+      POSTGRES_PASSWORD: "pass"
+      # ports:
+      #   - 5432:5432
+      # env_file:
+      #   - .env-dev
+
+      # envでバージョン変えるとかしたいよんね
