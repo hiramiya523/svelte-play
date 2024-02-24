@@ -15,12 +15,18 @@ pnpm dev
 pnpm i -D sveltekit-superforms zod
 
 - prisma
- pnpm add -D prisma && pnpm add @prisma/client
+pnpm install -D prisma @prisma/client
 
  - cli利用確認
  pnpx prisma 
 
 - Generate Prisma files (default: postgresql)
   pnpx prisma init 
+
+
+- @prisma/client"' has no exported member 'PrismaClient'. ....
+  pnpx prisma generate
+
+
 
  pnpm prisma studio
